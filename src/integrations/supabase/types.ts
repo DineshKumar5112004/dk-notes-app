@@ -14,40 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
+      folders: {
+        Row: {
+          color: string
+          created_at: string
+          icon: string
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          icon?: string
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          icon?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       notes: {
         Row: {
           archived: boolean
           color: string
           content: string
           created_at: string
+          deleted_at: string | null
+          folder_id: string | null
           id: string
           pinned: boolean
+          reminder_at: string | null
           tags: string[]
           title: string
           updated_at: string
           user_id: string
+          word_count: number
         }
         Insert: {
           archived?: boolean
           color?: string
           content?: string
           created_at?: string
+          deleted_at?: string | null
+          folder_id?: string | null
           id?: string
           pinned?: boolean
+          reminder_at?: string | null
           tags?: string[]
           title?: string
           updated_at?: string
           user_id: string
+          word_count?: number
         }
         Update: {
           archived?: boolean
           color?: string
           content?: string
           created_at?: string
+          deleted_at?: string | null
+          folder_id?: string | null
           id?: string
           pinned?: boolean
+          reminder_at?: string | null
           tags?: string[]
           title?: string
+          updated_at?: string
+          user_id?: string
+          word_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notes_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_emoji: string
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_emoji?: string
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_emoji?: string
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
           updated_at?: string
           user_id?: string
         }
