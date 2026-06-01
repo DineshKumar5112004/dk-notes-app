@@ -155,7 +155,7 @@ function Shell() {
             </div>
             <div className="space-y-1">
               {folders.map((f) => {
-                const active = location.pathname === "/dashboard" && location.search.includes(`folder=${f.id}`);
+                const active = location.pathname === "/dashboard" && search.folder === f.id;
                 return (
                   <Link key={f.id} to="/dashboard" search={{ folder: f.id } as any}
                     className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm transition", active ? "bg-gradient-primary text-primary-foreground shadow-glow" : "hover:bg-muted")}>
