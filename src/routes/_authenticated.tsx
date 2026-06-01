@@ -91,9 +91,10 @@ function Shell() {
   const initials = (profile?.display_name || user?.email || "?").slice(0, 2).toUpperCase();
   const editingNote = editor.id ? notes.find((n) => n.id === editor.id) ?? null : null;
 
+  const search = (location.search ?? {}) as { view?: string; folder?: string };
   const isActive = (path: string) => location.pathname === path;
-  const isView = (v: string) => location.pathname === "/dashboard" && location.search.includes(`view=${v}`);
-  const isAllNotes = location.pathname === "/dashboard" && !location.search.includes("view=") && !location.search.includes("folder=");
+  const isView = (v: string) => location.pathname === "/dashboard" && search.view === v;
+  const isAllNotes = location.pathname === "/dashboard" && !search.view && !search.folder;
 
   return (
     <div className="min-h-screen bg-gradient-hero">
@@ -154,7 +155,7 @@ function Shell() {
             </div>
             <div className="space-y-1">
               {folders.map((f) => {
-                const active = location.pathname === "/dashboard" && location.search.includes(`folder=${f.id}`);
+                const active = location.pathname === "/dashboard" && search.folder === f.id;
                 return (
                   <Link key={f.id} to="/dashboard" search={{ folder: f.id } as any}
                     className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm transition", active ? "bg-gradient-primary text-primary-foreground shadow-glow" : "hover:bg-muted")}>
