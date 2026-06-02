@@ -7,13 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { X, Bell, Download, FileText, Sparkles, ChevronDown, Eye, Pencil } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
+import { X, Bell, Download, FileText, Sparkles, ChevronDown, Eye, Pencil, Wand2, Share2, Printer, Loader2, Link2Off, Type, Hash, Wand } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
 import { useAppData, type Note, type NoteColor } from "@/hooks/use-app-data";
 import { formatDistanceToNow } from "date-fns";
+import { aiAssist } from "@/lib/ai.functions";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
