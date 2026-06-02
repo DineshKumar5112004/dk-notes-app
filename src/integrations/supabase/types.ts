@@ -53,8 +53,10 @@ export type Database = {
           deleted_at: string | null
           folder_id: string | null
           id: string
+          is_public: boolean
           pinned: boolean
           reminder_at: string | null
+          share_token: string | null
           tags: string[]
           title: string
           updated_at: string
@@ -69,8 +71,10 @@ export type Database = {
           deleted_at?: string | null
           folder_id?: string | null
           id?: string
+          is_public?: boolean
           pinned?: boolean
           reminder_at?: string | null
+          share_token?: string | null
           tags?: string[]
           title?: string
           updated_at?: string
@@ -85,8 +89,10 @@ export type Database = {
           deleted_at?: string | null
           folder_id?: string | null
           id?: string
+          is_public?: boolean
           pinned?: boolean
           reminder_at?: string | null
+          share_token?: string | null
           tags?: string[]
           title?: string
           updated_at?: string
