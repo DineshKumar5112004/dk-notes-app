@@ -185,15 +185,36 @@ export function NoteEditor({ open, note, defaultFolderId = null, onClose }: Prop
             <DialogTitle className="font-display text-base">{note ? "Edit note" : "New note"}</DialogTitle>
             <div className="flex items-center gap-2">
               <Select value={folderId ?? "none"} onValueChange={(v) => setFolderId(v === "none" ? null : v)}>
-                <SelectTrigger className="h-8 w-[140px] text-xs"><SelectValue placeholder="No folder" /></SelectTrigger>
+                <SelectTrigger className="h-8 w-[130px] text-xs"><SelectValue placeholder="No folder" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">No folder</SelectItem>
                   {folders.map((f) => <SelectItem key={f.id} value={f.id}>{f.name}</SelectItem>)}
                 </SelectContent>
               </Select>
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8"><Sparkles className="mr-1 h-3.5 w-3.5" /> Template <ChevronDown className="ml-1 h-3 w-3" /></Button>
+                  <Button size="sm" className="h-8 bg-gradient-primary shadow-glow" disabled={!!aiBusy}>
+                    {aiBusy ? <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" /> : <Wand2 className="mr-1 h-3.5 w-3.5" />}
+                    Magic <ChevronDown className="ml-1 h-3 w-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="text-[10px] uppercase tracking-wide text-muted-foreground">AI assistant</DropdownMenuLabel>
+                  <DropdownMenuItem onClick={() => runAi("summarize")}><Sparkles className="mr-2 h-4 w-4" /> Summarize</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => runAi("rewrite")}><Wand className="mr-2 h-4 w-4" /> Rewrite & polish</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => runAi("expand")}><FileText className="mr-2 h-4 w-4" /> Expand into detail</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => runAi("fix_grammar")}><Pencil className="mr-2 h-4 w-4" /> Fix grammar</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => runAi("generate")}><Sparkles className="mr-2 h-4 w-4" /> Generate from prompt</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => runAi("title")}><Type className="mr-2 h-4 w-4" /> Suggest title</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => runAi("tags")}><Hash className="mr-2 h-4 w-4" /> Suggest tags</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8"><FileText className="mr-1 h-3.5 w-3.5" /> Template <ChevronDown className="ml-1 h-3 w-3" /></Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {templates.map((t, i) => <DropdownMenuItem key={t.name} onClick={() => applyTemplate(i)}><FileText className="mr-2 h-4 w-4" /> {t.name}</DropdownMenuItem>)}
