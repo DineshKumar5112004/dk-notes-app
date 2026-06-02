@@ -294,8 +294,16 @@ export function NoteEditor({ open, note, defaultFolderId = null, onClose }: Prop
               </PopoverContent>
             </Popover>
             <Button variant="ghost" size="sm" className="h-8" onClick={handleExport} disabled={!content && !title}>
-              <Download className="mr-1 h-3.5 w-3.5" /> Export
+              <Download className="mr-1 h-3.5 w-3.5" /> .md
             </Button>
+            <Button variant="ghost" size="sm" className="h-8" onClick={handlePrint} disabled={!content && !title}>
+              <Printer className="mr-1 h-3.5 w-3.5" /> PDF
+            </Button>
+            {note && (
+              <Button variant={note.is_public ? "default" : "ghost"} size="sm" className={cn("h-8", note.is_public && "bg-gradient-primary shadow-glow")} onClick={handleShare}>
+                {note.is_public ? <><Link2Off className="mr-1 h-3.5 w-3.5" /> Unshare</> : <><Share2 className="mr-1 h-3.5 w-3.5" /> Share</>}
+              </Button>
+            )}
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden text-xs text-muted-foreground sm:inline">{wordCount} words · {readMin} min read</span>
