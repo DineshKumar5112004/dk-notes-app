@@ -105,6 +105,7 @@ function Dashboard() {
 }
 
 function Empty({ onCreate, hasFilter }: { onCreate: () => void; hasFilter: boolean }) {
+  const { seedDemo } = useAppData();
   return (
     <div className="grid place-items-center rounded-3xl border border-dashed border-border bg-card/30 p-16 text-center">
       <div className="mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-primary shadow-glow">
@@ -112,9 +113,14 @@ function Empty({ onCreate, hasFilter }: { onCreate: () => void; hasFilter: boole
       </div>
       <h3 className="font-display text-xl font-semibold">{hasFilter ? "No matches" : "Your canvas is blank"}</h3>
       <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-        {hasFilter ? "Try a different search or clear your filters." : "Tap below to write your first note. Markdown, tags, colors and reminders are all built-in."}
+        {hasFilter ? "Try a different search or clear your filters." : "Tap below to write your first note. Markdown, AI, tags, colors and reminders are all built-in."}
       </p>
-      {!hasFilter && <Button onClick={onCreate} className="mt-6 bg-gradient-primary shadow-glow"><Plus className="mr-1 h-4 w-4" /> Create your first note</Button>}
+      {!hasFilter && (
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+          <Button onClick={onCreate} className="bg-gradient-primary shadow-glow"><Plus className="mr-1 h-4 w-4" /> Create your first note</Button>
+          <Button variant="outline" onClick={seedDemo}>✨ Load demo workspace</Button>
+        </div>
+      )}
     </div>
   );
 }
