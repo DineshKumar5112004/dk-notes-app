@@ -51,7 +51,8 @@ function downloadFile(name: string, content: string, type = "text/markdown") {
 }
 
 export function NoteEditor({ open, note, defaultFolderId = null, onClose }: Props) {
-  const { folders, createNote, updateNote } = useAppData();
+  const { folders, createNote, updateNote, shareNote, unshareNote } = useAppData();
+  const callAi = useServerFn(aiAssist);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [color, setColor] = useState<NoteColor>("default");
@@ -60,6 +61,7 @@ export function NoteEditor({ open, note, defaultFolderId = null, onClose }: Prop
   const [folderId, setFolderId] = useState<string | null>(null);
   const [reminderAt, setReminderAt] = useState<string>("");
   const [mode, setMode] = useState<"write" | "preview">("write");
+  const [aiBusy, setAiBusy] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
