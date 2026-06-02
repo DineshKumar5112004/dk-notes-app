@@ -18,6 +18,8 @@ export interface Note {
   deleted_at: string | null;
   reminder_at: string | null;
   word_count: number;
+  share_token: string | null;
+  is_public: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -57,6 +59,11 @@ interface AppData {
   createFolder: (name: string, color?: string) => Promise<Folder | null>;
   renameFolder: (id: string, name: string) => Promise<void>;
   deleteFolder: (id: string) => Promise<void>;
+  // sharing
+  shareNote: (id: string) => Promise<string | null>;
+  unshareNote: (id: string) => Promise<void>;
+  // demo
+  seedDemo: () => Promise<void>;
   // profile
   updateProfile: (patch: Partial<Profile>) => Promise<void>;
 }
