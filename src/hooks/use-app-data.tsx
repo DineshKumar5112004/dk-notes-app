@@ -189,10 +189,53 @@ export function AppDataProvider({ children }: { children: ReactNode }) {
     toast.success("Profile updated");
   };
 
+  const shareNote: AppData["shareNote"] = async (id) => {
+    const note = notes.find((n) => n.id === id);
+    if (!note) return null;
+    let token = note.share_token;
+    if (!token) {
+      token = (crypto.randomUUID?.() || Math.random().toString(36).slice(2)).replace(/-/g, "");
+    }
+    const { error } = await supabase.from("notes").update({ share_token: token, is_public: true }).eq("id", id);
+    if (error) { toast.error(error.message); return null; }
+    setNotes((p) => p.map((n) => (n.id === id ? { ...n, share_token: token, is_public: true } : n)));
+    const url = `${window.location.origin}/share/${token}`;
+    try { await navigator.clipboard.writeText(url); toast.success("Share link copied!"); } catch { toast.success("Share link ready"); }
+    return url;
+  };
+
+  const unshareNote: AppData["unshareNote"] = async (id) => {
+    const { error } = await supabase.from("notes").update({ is_public: false }).eq("id", id);
+    if (error) return void toast.error(error.message);
+    setNotes((p) => p.map((n) => (n.id === id ? { ...n, is_public: false } : n)));
+    toast.success("Sharing disabled");
+  };
+
+  const seedDemo: AppData["seedDemo"] = async () => {
+    if (!user) return;
+    const { data: f1 } = await supabase.from("folders").insert({ user_id: user.id, name: "Studies", color: "indigo" }).select().single();
+    const { data: f2 } = await supabase.from("folders").insert({ user_id: user.id, name: "Ideas", color: "violet" }).select().single();
+    const samples = [
+      { title: "Welcome to Noctis ✨", content: "# Welcome!\n\nThis is **Noctis** — your AI-powered note workspace.\n\n## Try these:\n- Press `⌘ K` to open the command palette\n- Click the ✨ **Magic** button in any note for AI assistance\n- Click **Share** to make a note public\n- Add tags, pin, archive, and organize with folders", color: "indigo", pinned: true, tags: ["welcome", "guide"], folder_id: null },
+      { title: "Internship: Frontend Dev — Week 1", content: "## What I learned\n- React component architecture\n- TanStack Router & file-based routing\n- Tailwind v4 with `@theme` tokens\n- Supabase RLS policies\n\n## Action items\n- [ ] Finish auth flow\n- [x] Set up CI\n- [ ] Write tests", color: "emerald", pinned: false, tags: ["internship", "frontend"], folder_id: f1?.id ?? null },
+      { title: "6th Sem Project — Noctis", content: "## Goal\nBuild a pro-grade note-taking app for 150/150 marks.\n\n## Features delivered\n- Auth (email + Google)\n- Folders, tags, pins, archive, trash\n- Markdown editor + templates\n- Live preview & word count\n- AI: summarize, rewrite, expand, generate\n- Public share links\n- Statistics dashboard\n- Command palette (⌘K)\n- Dark/light theme\n- Real-time sync", color: "sky", pinned: true, tags: ["project", "college"], folder_id: f1?.id ?? null },
+      { title: "App idea: AI study buddy", content: "Quick idea: an AI assistant that turns lecture notes into flashcards, quizzes, and summaries. Could pair with Noctis.\n\n- Voice input\n- Spaced repetition\n- Export to Anki", color: "amber", pinned: false, tags: ["idea", "ai"], folder_id: f2?.id ?? null },
+      { title: "Books to read", content: "1. *Deep Work* — Cal Newport\n2. *Atomic Habits* — James Clear\n3. *The Pragmatic Programmer*\n4. *Designing Data-Intensive Applications*", color: "rose", pinned: false, tags: ["books", "reading"], folder_id: null },
+      { title: "Standup — Daily template", content: "### Yesterday\n- \n\n### Today\n- \n\n### Blockers\n- ", color: "default", pinned: false, tags: ["work", "template"], folder_id: f1?.id ?? null },
+    ];
+    const payload = samples.map((s) => ({ ...s, user_id: user.id, word_count: s.content.trim().split(/\s+/).length, archived: false }));
+    const { error } = await supabase.from("notes").insert(payload);
+    if (error) return void toast.error(error.message);
+    toast.success("Demo workspace loaded!");
+    refresh();
+  };
+
   const value = useMemo<AppData>(() => ({
     notes, folders, profile, loading, refresh,
     createNote, updateNote, trashNote, restoreNote, destroyNote, emptyTrash,
-    createFolder, renameFolder, deleteFolder, updateProfile,
+    createFolder, renameFolder, deleteFolder,
+    shareNote, unshareNote, seedDemo,
+    updateProfile,
   }), [notes, folders, profile, loading, refresh]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
