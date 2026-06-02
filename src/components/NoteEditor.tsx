@@ -110,6 +110,73 @@ export function NoteEditor({ open, note, defaultFolderId = null, onClose }: Prop
     downloadFile(`${(title || "untitled").replace(/[^a-z0-9-]/gi, "-").toLowerCase()}.md`, fm + content);
   };
 
+  const handlePrint = () => {
+    // Open a new window with the rendered note for print/PDF
+    const w = window.open("", "_blank", "noopener,noreferrer,width=800,height=900");
+    if (!w) return toast.error("Pop-up blocked — allow pop-ups to print.");
+    const safeTitle = (title || "Untitled").replace(/</g, "&lt;");
+    const html = `<!doctype html><html><head><meta charset="utf-8"><title>${safeTitle}</title>
+      <style>
+        body{font-family:-apple-system,BlinkMacSystemFont,Inter,system-ui,sans-serif;max-width:720px;margin:48px auto;padding:0 24px;color:#111;line-height:1.65}
+        h1{font-size:32px;margin-bottom:8px}.meta{color:#666;font-size:12px;margin-bottom:24px;border-bottom:1px solid #eee;padding-bottom:12px}
+        pre,code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#f5f5f5;padding:2px 6px;border-radius:4px;font-size:13px}
+        pre{padding:12px;overflow:auto}blockquote{border-left:3px solid #ddd;padding-left:16px;color:#555;margin:16px 0}
+        h2{margin-top:28px}h3{margin-top:20px}ul,ol{padding-left:24px}img{max-width:100%}
+        .tag{display:inline-block;background:#eef;color:#447;padding:2px 8px;border-radius:999px;font-size:11px;margin-right:4px}
+        @media print{body{margin:0}}
+      </style></head><body>
+      <h1>${safeTitle}</h1>
+      <div class="meta">${new Date().toLocaleDateString()} · ${wordCount} words${tags.length ? " · " + tags.map((t) => `<span class="tag">#${t}</span>`).join(" ") : ""}</div>
+      <div id="c"></div>
+      <script>window.__c=${JSON.stringify(content)};</script>
+      <script type="module">
+        import {marked} from "https://esm.sh/marked@12";
+        document.getElementById("c").innerHTML = marked.parse(window.__c||"");
+        setTimeout(()=>window.print(), 300);
+      </script>
+      </body></html>`;
+    w.document.open(); w.document.write(html); w.document.close();
+  };
+
+  const runAi = async (action: "summarize" | "rewrite" | "expand" | "fix_grammar" | "generate" | "title" | "tags") => {
+    const source = action === "generate" ? (title || content || "Brainstorm a new note") : (content || title);
+    if (!source.trim()) return toast.error("Write something first.");
+    setAiBusy(action);
+    try {
+      const { text } = await callAi({ data: { action, content: source } });
+      if (!text) throw new Error("Empty AI response");
+      if (action === "title") {
+        setTitle(text.replace(/^["']|["']$/g, "").slice(0, 120));
+        toast.success("Title generated");
+      } else if (action === "tags") {
+        const newTags = text.split(",").map((t) => t.trim().toLowerCase().replace(/[^a-z0-9-]/g, "")).filter(Boolean).slice(0, 5);
+        setTags((prev) => Array.from(new Set([...prev, ...newTags])));
+        toast.success(`Added ${newTags.length} tags`);
+      } else if (action === "generate") {
+        setContent((cur) => cur ? cur + "\n\n" + text : text);
+        setMode("preview");
+        toast.success("Generated");
+      } else {
+        setContent(text);
+        setMode("preview");
+        toast.success("AI updated your note");
+      }
+    } catch (e: any) {
+      toast.error(e?.message || "AI request failed");
+    } finally {
+      setAiBusy(null);
+    }
+  };
+
+  const handleShare = async () => {
+    if (!note) return toast.error("Save the note first to share it.");
+    if (note.is_public) {
+      await unshareNote(note.id);
+    } else {
+      await shareNote(note.id);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="flex max-h-[90vh] max-w-3xl flex-col gap-3 p-0">
