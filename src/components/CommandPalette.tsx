@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command";
-import { FileText, Plus, Search, Trash2, BarChart3, Settings, Folder, Pin, Archive, Moon, Sun, FolderPlus, LogOut } from "lucide-react";
+import { FileText, Plus, Search, Trash2, BarChart3, Settings, Folder, Pin, Archive, Moon, Sun, FolderPlus, LogOut, MessageSquare, LayoutGrid, Network, Focus } from "lucide-react";
 import { useAppData } from "@/hooks/use-app-data";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/hooks/use-auth";
@@ -49,6 +49,10 @@ export function CommandPalette({ open, onOpenChange, onNewNote, onNewFolder, onO
         <CommandSeparator />
         <CommandGroup heading="Navigate">
           <CommandItem onSelect={() => go(() => navigate({ to: "/dashboard" }))}><FileText className="mr-2 h-4 w-4" /> All notes</CommandItem>
+          <CommandItem onSelect={() => go(() => navigate({ to: "/chat" }))}><MessageSquare className="mr-2 h-4 w-4" /> AI Chat</CommandItem>
+          <CommandItem onSelect={() => go(() => navigate({ to: "/board" }))}><LayoutGrid className="mr-2 h-4 w-4" /> Board</CommandItem>
+          <CommandItem onSelect={() => go(() => navigate({ to: "/graph" }))}><Network className="mr-2 h-4 w-4" /> Graph</CommandItem>
+          <CommandItem onSelect={() => go(() => navigate({ to: "/focus" }))}><Focus className="mr-2 h-4 w-4" /> Focus mode</CommandItem>
           <CommandItem onSelect={() => go(() => navigate({ to: "/dashboard", search: { view: "pinned" } as any }))}><Pin className="mr-2 h-4 w-4" /> Pinned</CommandItem>
           <CommandItem onSelect={() => go(() => navigate({ to: "/dashboard", search: { view: "archived" } as any }))}><Archive className="mr-2 h-4 w-4" /> Archive</CommandItem>
           <CommandItem onSelect={() => go(() => navigate({ to: "/trash" }))}><Trash2 className="mr-2 h-4 w-4" /> Trash</CommandItem>
