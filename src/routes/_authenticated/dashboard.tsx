@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
-import { AnimatePresence } from "framer-motion";
-import { LayoutGrid, List, Plus, FileText, Tag as TagIcon } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { LayoutGrid, List, Plus, FileText, Tag as TagIcon, Sparkles, Clock, Pin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useAppData } from "@/hooks/use-app-data";
+import { useAppData, type Note } from "@/hooks/use-app-data";
 import { NoteCard } from "@/components/NoteCard";
 import { cn } from "@/lib/utils";
 
@@ -61,10 +61,60 @@ function Dashboard() {
   const heading = folderObj ? folderObj.name : view === "pinned" ? "Pinned" : view === "archived" ? "Archive" : "All notes";
   const openEditor = (id: string | null) => window.dispatchEvent(new CustomEvent("noctis:openEditor", { detail: id }));
 
+  // Magazine hero: featured + recent
+  const showHero = !q && !activeTag && !folder && view === "all" && filtered.length > 0;
+  const pinned = filtered.filter((n) => n.pinned);
+  const featured: Note | undefined = pinned[0] ?? filtered[0];
+  const secondary: Note[] = (pinned.length > 1 ? pinned.slice(1) : filtered.filter((n) => n.id !== featured?.id)).slice(0, 2);
+
   return (
     <div>
       <div className="mb-5 flex items-center justify-between gap-3">
-        <div>
+    <div>
+      {showHero && featured && (
+        <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-card/40 p-1 shadow-card">
+          <div className="bg-grid grid gap-4 rounded-[22px] bg-gradient-to-br from-transparent via-transparent to-primary/10 p-5 md:grid-cols-3 md:p-7">
+            <button onClick={() => openEditor(featured.id)} className="group relative col-span-2 overflow-hidden rounded-2xl bg-gradient-aurora p-6 text-left text-primary-foreground shadow-glow transition hover:scale-[1.005] md:p-8">
+              <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider backdrop-blur">
+                <Sparkles className="h-3 w-3" /> Featured
+              </div>
+              <h2 className="font-display text-2xl font-bold leading-tight md:text-4xl">{featured.title || "Untitled"}</h2>
+              <p className="mt-2 line-clamp-3 max-w-2xl text-sm text-white/85 md:text-base">{featured.content || "Open to start writing…"}</p>
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-white/75">
+                {featured.pinned && <span className="inline-flex items-center gap-1"><Pin className="h-3 w-3" /> Pinned</span>}
+                <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> {new Date(featured.updated_at).toLocaleDateString()}</span>
+                <span>{featured.word_count} words</span>
+              </div>
+            </button>
+            <div className="grid gap-3">
+              {secondary.map((n) => (
+                <button key={n.id} onClick={() => openEditor(n.id)} className="group rounded-2xl border border-border bg-card p-4 text-left transition hover:border-primary/50 hover:shadow-glow">
+                  <div className="mb-1 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {n.pinned ? <Pin className="h-3 w-3 text-primary" /> : <Clock className="h-3 w-3" />}
+                    {n.pinned ? "Pinned" : "Recent"}
+                  </div>
+                  <h3 className="line-clamp-1 font-display text-base font-semibold">{n.title || "Untitled"}</h3>
+                  <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{n.content || "Empty note"}</p>
+                </button>
+              ))}
+              {secondary.length === 0 && (
+                <div className="rounded-2xl border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
+                  Pin a few notes to feature them here.
+                </div>
+              )}
+              <div className="rounded-2xl border border-border bg-gradient-aurora/10 p-4">
+                <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">This workspace</div>
+                <div className="mt-1 grid grid-cols-3 gap-2 text-center">
+                  <Stat label="Notes" value={notes.filter((n) => !n.deleted_at && !n.archived).length} />
+                  <Stat label="Pinned" value={notes.filter((n) => n.pinned && !n.archived && !n.deleted_at).length} />
+                  <Stat label="Words" value={notes.reduce((s, n) => s + (n.deleted_at ? 0 : n.word_count), 0)} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+      )}
+
           <h1 className="font-display text-2xl font-bold md:text-3xl">{heading}</h1>
           <p className="text-sm text-muted-foreground">{filtered.length} {filtered.length === 1 ? "note" : "notes"}{q && ` matching "${q}"`}</p>
         </div>
@@ -100,6 +150,15 @@ function Dashboard() {
           </AnimatePresence>
         </div>
       )}
+    </div>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div>
+      <div className="font-display text-lg font-bold tabular-nums">{value}</div>
+      <div className="text-[9px] uppercase tracking-wider text-muted-foreground">{label}</div>
     </div>
   );
 }
