@@ -154,6 +154,15 @@ function Dashboard() {
   );
 }
 
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div>
+      <div className="font-display text-lg font-bold tabular-nums">{value}</div>
+      <div className="text-[9px] uppercase tracking-wider text-muted-foreground">{label}</div>
+    </div>
+  );
+}
+
 function Empty({ onCreate, hasFilter }: { onCreate: () => void; hasFilter: boolean }) {
   const { seedDemo } = useAppData();
   return (
