@@ -16,24 +16,24 @@ export const Route = createFileRoute("/")({
 });
 
 const features = [
-  { icon: Wand2, title: "AI superpowers", desc: "Summarize, rewrite, expand, fix grammar, generate from a prompt — one click, instant." },
-  { icon: Share2, title: "Public share links", desc: "Toggle a note public and share a beautiful read-only page with anyone." },
-  { icon: Folder, title: "Folders & tags", desc: "Organize with nested folders and smart multi-tag filtering." },
-  { icon: Search, title: "Lightning search", desc: "Global search + ⌘K command palette finds anything in milliseconds." },
-  { icon: FileText, title: "Markdown + templates", desc: "Live Markdown preview with meeting, journal, project & reading templates." },
-  { icon: BarChart3, title: "Writing analytics", desc: "Charts for note frequency, word counts and category distribution." },
-  { icon: Trash2, title: "Trash & restore", desc: "Soft-delete with undo. Empty trash when you're ready — no accidents." },
-  { icon: Pin, title: "Pin what matters", desc: "Float critical notes to the top of your canvas with a single click." },
-  { icon: Palette, title: "Color-coded notes", desc: "Seven beautifully tuned hues to organize at a glance." },
-  { icon: Cloud, title: "Real-time sync", desc: "Postgres-backed with realtime channels — changes appear instantly." },
-  { icon: Lock, title: "Secure by default", desc: "Row-level security: only you can read your private notes. Period." },
-  { icon: Moon, title: "Crafted dark mode", desc: "Midnight Focus palette. Easy on the eyes at 2 AM cramming sessions." },
+  { icon: Wand2, title: "AI writing assistant", desc: "Summarize, rewrite, expand, fix grammar, or generate from a prompt — instantly, in any note." },
+  { icon: Share2, title: "Public share links", desc: "Publish any note as a polished, read-only page — share with one click, revoke any time." },
+  { icon: Folder, title: "Folders & smart tags", desc: "Organize at scale with nested folders and multi-tag filtering built for large knowledge bases." },
+  { icon: Search, title: "Instant search", desc: "Global search and a ⌘K command palette surface anything in your workspace in milliseconds." },
+  { icon: FileText, title: "Markdown & templates", desc: "Live Markdown with meeting, journal, project, and reading templates to start writing faster." },
+  { icon: BarChart3, title: "Productivity analytics", desc: "Track writing streaks, word counts, and tag distribution — see how your knowledge compounds." },
+  { icon: Trash2, title: "Safe by default", desc: "Soft-delete with one-click restore. Nothing is ever lost until you choose to remove it." },
+  { icon: Pin, title: "Pins & priorities", desc: "Surface what matters with pins, colors, and a featured workspace hero on your dashboard." },
+  { icon: Palette, title: "Color-coded notes", desc: "Seven carefully tuned hues let you scan, sort, and triage your workspace at a glance." },
+  { icon: Cloud, title: "Real-time sync", desc: "Postgres-backed with realtime channels — your changes appear instantly on every device." },
+  { icon: Lock, title: "Private by design", desc: "Row-level security keeps every note scoped to you. Your workspace is yours alone." },
+  { icon: Moon, title: "Light & dark themes", desc: "A meticulously crafted dark mode and a clean light mode — comfortable in any environment." },
 ];
 
 const stats = [
-  { value: "12+", label: "Pro features" },
+  { value: "AI", label: "Built-in writing assistant" },
   { value: "⌘K", label: "Command palette" },
-  { value: "100%", label: "Cloud synced" },
+  { value: "Realtime", label: "Cloud sync" },
   { value: "0ms", label: "To start writing" },
 ];
 
