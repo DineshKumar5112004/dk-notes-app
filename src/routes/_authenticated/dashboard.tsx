@@ -104,11 +104,24 @@ function Dashboard() {
               )}
               <div className="rounded-2xl border border-border bg-gradient-aurora/10 p-4">
                 <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">This workspace</div>
-                <div className="mt-1 grid grid-cols-3 gap-2 text-center">
-                  <Stat label="Notes" value={notes.filter((n) => !n.deleted_at && !n.archived).length} />
+                <div className="mt-2 grid grid-cols-4 gap-2 text-center">
+                  <Stat label="Total" value={notes.filter((n) => !n.deleted_at).length} />
                   <Stat label="Pinned" value={notes.filter((n) => n.pinned && !n.archived && !n.deleted_at).length} />
+                  <Stat label="This week" value={notes.filter((n) => !n.deleted_at && (Date.now() - new Date(n.updated_at).getTime()) < 7 * 86400000).length} />
                   <Stat label="Words" value={notes.reduce((s, n) => s + (n.deleted_at ? 0 : n.word_count), 0)} />
                 </div>
+                {allTags.length > 0 && (
+                  <div className="mt-3 border-t border-border/60 pt-3">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Top tags</div>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {topTags.map((t) => (
+                        <button key={t.tag} onClick={() => setActiveTag(activeTag === t.tag ? null : t.tag)}>
+                          <Badge variant="secondary" className="cursor-pointer text-[10px]">#{t.tag} <span className="ml-1 opacity-60">{t.count}</span></Badge>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
