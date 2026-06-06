@@ -81,22 +81,22 @@ function Index() {
         <section className="relative mx-auto max-w-5xl py-20 text-center md:py-32">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card/40 px-4 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur">
-            <Sparkles className="h-3 w-3 text-primary" /> Now with AI writing assistant + public share links
+            <Sparkles className="h-3 w-3 text-primary" /> AI writing assistant · Public sharing · Realtime sync
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
-            Notes that think<br />
-            <span className="text-gradient">alongside you.</span>
+            The thinking workspace<br />
+            <span className="text-gradient">for modern teams.</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
             className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-            A pro-grade note workspace with an AI assistant, folders, Markdown, templates, public sharing, statistics, and a command palette — all in a stunning midnight aesthetic.
+            Capture ideas, organize knowledge, and ship faster with an AI-native notes platform — folders, Markdown, sharing, analytics, and a command palette in one beautifully crafted product.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Button asChild size="lg" className="bg-gradient-primary shadow-glow">
               <Link to={user ? "/dashboard" : "/login"}>
-                {user ? "Open your notes" : "Start free"} <ArrowRight className="ml-2 h-4 w-4" />
+                {user ? "Open your workspace" : "Get started free"} <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
