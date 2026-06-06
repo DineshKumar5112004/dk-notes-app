@@ -162,8 +162,8 @@ function Index() {
         {/* Features grid */}
         <section id="features" className="py-20">
           <div className="mb-12 text-center">
-            <h2 className="font-display text-4xl font-bold md:text-5xl">Twelve features.<br />One delightful canvas.</h2>
-            <p className="mt-4 text-muted-foreground">Every detail tuned to make your sixth-semester project unforgettable.</p>
+            <h2 className="font-display text-4xl font-bold md:text-5xl">Everything you need.<br />Nothing in the way.</h2>
+            <p className="mt-4 text-muted-foreground">A focused set of features, polished end-to-end, designed for daily use at work.</p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {features.map((f, i) => (
