@@ -58,6 +58,12 @@ function Dashboard() {
     return Array.from(s).sort();
   }, [notes]);
 
+  const topTags = useMemo(() => {
+    const counts = new Map<string, number>();
+    notes.filter((n) => !n.deleted_at).forEach((n) => n.tags.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)));
+    return Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([tag, count]) => ({ tag, count }));
+  }, [notes]);
+
   const heading = folderObj ? folderObj.name : view === "pinned" ? "Pinned" : view === "archived" ? "Archive" : "All notes";
   const openEditor = (id: string | null) => window.dispatchEvent(new CustomEvent("noctis:openEditor", { detail: id }));
 
