@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Sparkles, Network, Kanban, Timer, FileDown, Bot, Search, Lightbulb, FolderTree } from "lucide-react";
+import { ArrowUpRight, Command, Download, Sparkles, Network, Kanban, Timer, FileDown, Bot, Search, Lightbulb, FolderTree } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Logo } from "@/components/Logo";
