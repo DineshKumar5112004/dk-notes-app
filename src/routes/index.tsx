@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Command, Sparkles, Network, Kanban, Timer, FileDown, Bot, Search, Lightbulb, FolderTree, Download, Share2 } from "lucide-react";
+import { ArrowUpRight, Command, Download, Sparkles, Network, Kanban, Timer, FileDown, Bot, Search, Lightbulb, FolderTree } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,15 +43,8 @@ function Header({ user }: { user: ReturnType<typeof useAuth>["user"] }) {
   return (
     <header className="relative z-40 border-b border-border/40">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="relative grid h-8 w-8 place-items-center rounded-lg border border-border/80 bg-card">
-            <div className="absolute inset-1 rounded-md bg-mint opacity-90" />
-            <div className="absolute inset-2 rounded-sm bg-background" />
-            <div className="absolute h-1 w-1 rounded-full bg-mint shadow-glow" />
-          </div>
-          <span className="font-display text-2xl tracking-tight">Noctis</span>
-          <span className="ml-1 hidden rounded-full border border-border px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:inline">v2.0</span>
-        </Link>
+        <Logo to="/" size="md" showBadge />
+
 
         <nav className="hidden items-center gap-8 font-mono text-xs uppercase tracking-widest text-muted-foreground md:flex">
           <a href="#network" className="transition hover:text-foreground">Network</a>

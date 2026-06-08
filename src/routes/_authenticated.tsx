@@ -11,8 +11,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { CommandPalette } from "@/components/CommandPalette";
 import { NoteEditor } from "@/components/NoteEditor";
+import { Logo, LogoMark } from "@/components/Logo";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+
 
 export const Route = createFileRoute("/_authenticated")({
   component: AuthGate,
@@ -24,13 +26,14 @@ function AuthGate() {
   useEffect(() => { if (!loading && !user) navigate({ to: "/login", replace: true }); }, [loading, user, navigate]);
   if (loading || !user) {
     return (
-      <div className="grid min-h-screen place-items-center bg-gradient-hero">
-        <motion.div animate={{ scale: [1, 1.05, 1] }} transition={{ repeat: Infinity, duration: 1.4 }} className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-primary shadow-glow">
-          <Sparkles className="h-6 w-6 text-primary-foreground" />
+      <div className="grid min-h-screen place-items-center bg-aurora">
+        <motion.div animate={{ scale: [1, 1.05, 1] }} transition={{ repeat: Infinity, duration: 1.4 }}>
+          <LogoMark size="lg" />
         </motion.div>
       </div>
     );
   }
+
   return (
     <AppDataProvider>
       <Shell />
@@ -97,30 +100,28 @@ function Shell() {
   const isAllNotes = location.pathname === "/dashboard" && !search.view && !search.folder;
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
-      <header className="sticky top-0 z-30 border-b border-border bg-background/70 backdrop-blur-xl">
+    <div className="min-h-screen bg-background">
+      <div className="pointer-events-none fixed inset-0 bg-aurora opacity-60" />
+      <div className="relative">
+      <header className="sticky top-0 z-30 border-b border-border bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto flex items-center gap-3 px-4 py-3 md:px-6">
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <motion.div whileHover={{ rotate: 12 }} className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-primary shadow-glow">
-              <Sparkles className="h-5 w-5 text-primary-foreground" />
-            </motion.div>
-            <span className="hidden font-display text-lg font-bold sm:inline">Noctis</span>
-          </Link>
+          <Logo to="/dashboard" size="sm" />
           <div className="relative ml-2 flex-1 max-w-xl">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input id="global-search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search notes… (press / )" className="pl-9 pr-16" />
-            <button onClick={() => setPaletteOpen(true)} className="absolute right-2 top-1/2 hidden -translate-y-1/2 items-center gap-1 rounded-md border border-border bg-muted/50 px-1.5 py-0.5 text-[10px] text-muted-foreground sm:flex">
+            <button onClick={() => setPaletteOpen(true)} className="absolute right-2 top-1/2 hidden -translate-y-1/2 items-center gap-1 rounded-md border border-border bg-muted/50 px-1.5 py-0.5 text-[10px] text-muted-foreground sm:flex" aria-label="Open command palette">
               <CmdIcon className="h-3 w-3" />K
             </button>
           </div>
-          <Button onClick={() => setEditor({ open: true, id: null })} className="bg-gradient-primary shadow-glow">
+          <Button onClick={() => setEditor({ open: true, id: null })} className="bg-mint text-primary-foreground hover:bg-mint/90 shadow-glow">
             <Plus className="mr-1 h-4 w-4" /> <span className="hidden sm:inline">New note</span>
           </Button>
           <ThemeToggle />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Avatar className="h-8 w-8"><AvatarFallback className="bg-gradient-primary text-xs text-primary-foreground">{profile?.avatar_emoji || initials}</AvatarFallback></Avatar>
+              <Button variant="ghost" size="icon" className="rounded-full" aria-label="Account menu">
+                <Avatar className="h-8 w-8"><AvatarFallback className="bg-mint text-xs text-primary-foreground">{profile?.avatar_emoji || initials}</AvatarFallback></Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -135,6 +136,7 @@ function Shell() {
           </DropdownMenu>
         </div>
       </header>
+
 
       <div className="container mx-auto grid gap-6 px-4 py-6 md:px-6 lg:grid-cols-[230px_1fr]">
         <aside className="hidden space-y-6 lg:block">
@@ -165,11 +167,12 @@ function Shell() {
                 const active = location.pathname === "/dashboard" && search.folder === f.id;
                 return (
                   <Link key={f.id} to="/dashboard" search={{ folder: f.id } as any}
-                    className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm transition", active ? "bg-gradient-primary text-primary-foreground shadow-glow" : "hover:bg-muted")}>
+                    className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm transition", active ? "bg-mint text-primary-foreground shadow-glow" : "text-foreground/80 hover:bg-muted hover:text-foreground")}>
                     <span className="flex items-center gap-2 truncate"><FolderIcon className="h-4 w-4 shrink-0" /> <span className="truncate">{f.name}</span></span>
-                    <span className={cn("rounded-full px-2 text-xs", active ? "bg-white/20" : "bg-muted text-muted-foreground")}>{activeNotes.filter((n) => n.folder_id === f.id).length}</span>
+                    <span className={cn("rounded-full px-2 text-xs", active ? "bg-background/25 text-primary-foreground" : "bg-muted text-muted-foreground")}>{activeNotes.filter((n) => n.folder_id === f.id).length}</span>
                   </Link>
                 );
+
               })}
               {folders.length === 0 && <p className="px-3 text-xs text-muted-foreground">No folders yet</p>}
             </div>
@@ -196,20 +199,22 @@ function Shell() {
             onKeyDown={async (e) => { if (e.key === "Enter" && newFolder.trim()) { await createFolder(newFolder.trim()); setNewFolder(""); setFolderDlg(false); } }} />
           <DialogFooter>
             <Button variant="ghost" onClick={() => setFolderDlg(false)}>Cancel</Button>
-            <Button onClick={async () => { if (newFolder.trim()) { await createFolder(newFolder.trim()); setNewFolder(""); setFolderDlg(false); } }} className="bg-gradient-primary">Create</Button>
+            <Button onClick={async () => { if (newFolder.trim()) { await createFolder(newFolder.trim()); setNewFolder(""); setFolderDlg(false); } }} className="bg-mint text-primary-foreground hover:bg-mint/90">Create</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 }
 
 function SidebarLink({ to, search, icon: Icon, label, count, active, badge }: { to: string; search?: any; icon: any; label: string; count?: number; active: boolean; badge?: string }) {
   return (
-    <Link to={to as any} search={search as any} className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition", active ? "bg-gradient-aurora text-primary-foreground shadow-glow" : "hover:bg-muted")}>
+    <Link to={to as any} search={search as any} className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition", active ? "bg-mint text-primary-foreground shadow-glow" : "text-foreground/80 hover:bg-muted hover:text-foreground")}>
       <span className="flex items-center gap-2"><Icon className="h-4 w-4" /> {label}</span>
-      {badge && <span className={cn("rounded-full px-1.5 text-[9px] font-bold", active ? "bg-white/20 text-white" : "bg-gradient-aurora text-primary-foreground")}>{badge}</span>}
-      {count !== undefined && <span className={cn("rounded-full px-2 text-xs", active ? "bg-white/20" : "bg-muted text-muted-foreground")}>{count}</span>}
+      {badge && <span className={cn("rounded-full px-1.5 text-[9px] font-bold", active ? "bg-background/25 text-primary-foreground" : "bg-mint text-primary-foreground")}>{badge}</span>}
+      {count !== undefined && <span className={cn("rounded-full px-2 text-xs", active ? "bg-background/25 text-primary-foreground" : "bg-muted text-muted-foreground")}>{count}</span>}
     </Link>
+
   );
 }
