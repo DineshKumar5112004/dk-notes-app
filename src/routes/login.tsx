@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Sparkles, Mail, Lock, ArrowLeft } from "lucide-react";
+import { Mail, Lock, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/use-auth";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LogoMark } from "@/components/Logo";
+
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -62,23 +64,25 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
-      <header className="container mx-auto flex items-center justify-between px-6 py-6">
-        <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="h-4 w-4" /> Back home
-        </Link>
-        <ThemeToggle />
-      </header>
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      <div className="pointer-events-none absolute inset-0 bg-aurora" />
+      <div className="pointer-events-none absolute inset-0 grid-bg opacity-40" />
+      <div className="relative">
+        <header className="container mx-auto flex items-center justify-between px-6 py-6">
+          <Link to="/" className="flex items-center gap-2 text-sm text-muted-foreground transition hover:text-foreground">
+            <ArrowLeft className="h-4 w-4" /> Back home
+          </Link>
+          <ThemeToggle />
+        </header>
 
-      <div className="container mx-auto flex items-center justify-center px-6 py-12">
-        <div className="w-full max-w-md">
-          <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-primary shadow-glow">
-              <Sparkles className="h-6 w-6 text-primary-foreground" />
+        <div className="container mx-auto flex items-center justify-center px-6 py-12">
+          <div className="w-full max-w-md">
+            <div className="mb-8 flex flex-col items-center text-center">
+              <LogoMark size="lg" className="mb-4" />
+              <h1 className="font-display text-3xl font-semibold tracking-tight">Welcome to Noctis</h1>
+              <p className="mt-2 text-sm text-muted-foreground">Sign in to your thinking workspace.</p>
             </div>
-            <h1 className="font-display text-3xl font-bold">Welcome to Noctis</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Your notes, wherever you are.</p>
-          </div>
+
 
           <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
             <Button onClick={handleGoogle} variant="outline" className="w-full" type="button">
