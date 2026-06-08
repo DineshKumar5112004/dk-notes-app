@@ -116,9 +116,10 @@ function LoginPage() {
                       <Input id="pwd-in" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="pl-9" placeholder="••••••••" />
                     </div>
                   </div>
-                  <Button type="submit" disabled={loading} className="w-full bg-gradient-primary shadow-glow">
+                  <Button type="submit" disabled={loading} className="w-full bg-mint text-primary-foreground hover:bg-mint/90 shadow-glow">
                     {loading ? "Signing in…" : "Sign in"}
                   </Button>
+
                 </form>
               </TabsContent>
 
@@ -138,7 +139,7 @@ function LoginPage() {
                       <Input id="pwd-up" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} className="pl-9" placeholder="At least 6 characters" />
                     </div>
                   </div>
-                  <Button type="submit" disabled={loading} className="w-full bg-gradient-primary shadow-glow">
+                  <Button type="submit" disabled={loading} className="w-full bg-mint text-primary-foreground hover:bg-mint/90 shadow-glow">
                     {loading ? "Creating…" : "Create account"}
                   </Button>
                 </form>
@@ -151,6 +152,8 @@ function LoginPage() {
           </p>
         </div>
       </div>
+      </div>
     </div>
   );
 }
+
