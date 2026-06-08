@@ -37,7 +37,9 @@
   --color-ring-offset-background: var(--background);
 
   --color-mint: var(--mint);
+  --color-mint-strong: var(--mint-strong);
   --color-amber: var(--amber);
+  --color-amber-strong: var(--amber-strong);
   --color-coral: var(--coral);
 
   --color-note-default: var(--note-default);
@@ -48,6 +50,7 @@
   --color-note-emerald: var(--note-emerald);
   --color-note-sky: var(--note-sky);
 }
+
 
 /* Obsidian Aurora — light variant */
 :root {
@@ -73,9 +76,12 @@
   --input: oklch(0.93 0.01 85);
   --ring: oklch(0.55 0.15 165);
 
-  --mint: oklch(0.85 0.18 165);
-  --amber: oklch(0.78 0.16 75);
-  --coral: oklch(0.72 0.18 25);
+  --mint: oklch(0.55 0.15 165);          /* readable on light bg */
+  --mint-strong: oklch(0.45 0.16 165);   /* for text on light bg */
+  --amber: oklch(0.7 0.16 75);
+  --amber-strong: oklch(0.55 0.16 75);
+  --coral: oklch(0.6 0.18 25);
+
 
   --note-default: oklch(0.985 0.005 90);
   --note-indigo: oklch(0.93 0.07 275);
@@ -85,12 +91,13 @@
   --note-emerald: oklch(0.93 0.07 160);
   --note-sky: oklch(0.93 0.06 230);
 
-  --gradient-aurora: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.85 0.18 165 / 0.18), transparent 60%),
-                     radial-gradient(ellipse 60% 40% at 80% 30%, oklch(0.78 0.16 75 / 0.12), transparent 60%),
+  --gradient-aurora: radial-gradient(ellipse 80% 50% at 50% 0%, oklch(0.55 0.15 165 / 0.12), transparent 60%),
+                     radial-gradient(ellipse 60% 40% at 80% 30%, oklch(0.7 0.16 75 / 0.08), transparent 60%),
                      linear-gradient(180deg, oklch(0.98 0.005 90), oklch(0.96 0.01 85));
   --shadow-soft: 0 1px 2px oklch(0 0 0 / 0.04), 0 8px 24px -8px oklch(0 0 0 / 0.08);
-  --shadow-glow: 0 0 60px -10px oklch(0.85 0.18 165 / 0.4);
+  --shadow-glow: 0 0 60px -10px oklch(0.55 0.15 165 / 0.35);
 }
+
 
 /* Obsidian Aurora — dark (hero) */
 .dark {
@@ -115,8 +122,11 @@
   --ring: oklch(0.88 0.17 165);
 
   --mint: oklch(0.88 0.17 165);
+  --mint-strong: oklch(0.88 0.17 165);
   --amber: oklch(0.78 0.16 75);
+  --amber-strong: oklch(0.78 0.16 75);
   --coral: oklch(0.72 0.18 25);
+
 
   --note-default: oklch(0.18 0.006 80);
   --note-indigo: oklch(0.3 0.12 275);
@@ -150,12 +160,13 @@
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-glow { box-shadow: var(--shadow-glow); }
   .font-mono { font-family: var(--font-mono); }
-  .text-mint { color: var(--mint); }
-  .text-amber { color: var(--amber); }
+  .text-mint { color: var(--mint-strong); }
+  .text-amber { color: var(--amber-strong); }
   .text-coral { color: var(--coral); }
   .bg-mint { background-color: var(--mint); }
   .bg-amber { background-color: var(--amber); }
   .border-mint { border-color: var(--mint); }
+
   .text-gradient {
     background: linear-gradient(135deg, var(--mint), var(--amber));
     -webkit-background-clip: text;
