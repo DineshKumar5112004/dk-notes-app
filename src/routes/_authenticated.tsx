@@ -202,16 +202,18 @@ function Shell() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 }
 
 function SidebarLink({ to, search, icon: Icon, label, count, active, badge }: { to: string; search?: any; icon: any; label: string; count?: number; active: boolean; badge?: string }) {
   return (
-    <Link to={to as any} search={search as any} className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition", active ? "bg-gradient-aurora text-primary-foreground shadow-glow" : "hover:bg-muted")}>
+    <Link to={to as any} search={search as any} className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition", active ? "bg-mint text-primary-foreground shadow-glow" : "text-foreground/80 hover:bg-muted hover:text-foreground")}>
       <span className="flex items-center gap-2"><Icon className="h-4 w-4" /> {label}</span>
-      {badge && <span className={cn("rounded-full px-1.5 text-[9px] font-bold", active ? "bg-white/20 text-white" : "bg-gradient-aurora text-primary-foreground")}>{badge}</span>}
-      {count !== undefined && <span className={cn("rounded-full px-2 text-xs", active ? "bg-white/20" : "bg-muted text-muted-foreground")}>{count}</span>}
+      {badge && <span className={cn("rounded-full px-1.5 text-[9px] font-bold", active ? "bg-background/25 text-primary-foreground" : "bg-mint text-primary-foreground")}>{badge}</span>}
+      {count !== undefined && <span className={cn("rounded-full px-2 text-xs", active ? "bg-background/25 text-primary-foreground" : "bg-muted text-muted-foreground")}>{count}</span>}
     </Link>
+
   );
 }
