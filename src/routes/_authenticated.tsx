@@ -167,11 +167,12 @@ function Shell() {
                 const active = location.pathname === "/dashboard" && search.folder === f.id;
                 return (
                   <Link key={f.id} to="/dashboard" search={{ folder: f.id } as any}
-                    className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm transition", active ? "bg-gradient-primary text-primary-foreground shadow-glow" : "hover:bg-muted")}>
+                    className={cn("flex items-center justify-between rounded-lg px-3 py-2 text-sm transition", active ? "bg-mint text-primary-foreground shadow-glow" : "text-foreground/80 hover:bg-muted hover:text-foreground")}>
                     <span className="flex items-center gap-2 truncate"><FolderIcon className="h-4 w-4 shrink-0" /> <span className="truncate">{f.name}</span></span>
-                    <span className={cn("rounded-full px-2 text-xs", active ? "bg-white/20" : "bg-muted text-muted-foreground")}>{activeNotes.filter((n) => n.folder_id === f.id).length}</span>
+                    <span className={cn("rounded-full px-2 text-xs", active ? "bg-background/25 text-primary-foreground" : "bg-muted text-muted-foreground")}>{activeNotes.filter((n) => n.folder_id === f.id).length}</span>
                   </Link>
                 );
+
               })}
               {folders.length === 0 && <p className="px-3 text-xs text-muted-foreground">No folders yet</p>}
             </div>
@@ -198,7 +199,7 @@ function Shell() {
             onKeyDown={async (e) => { if (e.key === "Enter" && newFolder.trim()) { await createFolder(newFolder.trim()); setNewFolder(""); setFolderDlg(false); } }} />
           <DialogFooter>
             <Button variant="ghost" onClick={() => setFolderDlg(false)}>Cancel</Button>
-            <Button onClick={async () => { if (newFolder.trim()) { await createFolder(newFolder.trim()); setNewFolder(""); setFolderDlg(false); } }} className="bg-gradient-primary">Create</Button>
+            <Button onClick={async () => { if (newFolder.trim()) { await createFolder(newFolder.trim()); setNewFolder(""); setFolderDlg(false); } }} className="bg-mint text-primary-foreground hover:bg-mint/90">Create</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
